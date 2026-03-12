@@ -1,4 +1,5 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,9 +7,20 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private float jumpStrength = 10f;
     private float speed = 2f;
+    private Animator animator;
+
+    //public PlayerPositionHandler pph;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        GameManager.Instance.GameManagerCheck();
+    }
+
+    private void PlayWalkAnimation()
+    {
+        animator.SetTrigger("goWalk");
     }
 
     // Update is called once per frame
@@ -19,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
         var x = horizontalInput * speed * Time.deltaTime;
         var xyz = new Vector3(x, 0f, 0f);
         transform.Translate(xyz);
+
+        if (horizontalInput != 0) PlayWalkAnimation();
 
         var mth = Mathf.Abs(rb.linearVelocity.y) < 0.001f;
 
