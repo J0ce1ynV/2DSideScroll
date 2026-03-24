@@ -39,10 +39,23 @@ public class PlayerPositionHandler : MonoBehaviour
     {
         ChangePlayerPos(currentCheckpointPos);
     }
-
-    public void onFinish()
+    /*
+    public void onFinish(int newLevelUnlocked)
     {
-        //nanti diisi kalo ada game manager
+        GameManager.Instance.ChangeScene(0);
+        GameManager.Instance.ChangeLevel(newLevelUnlocked);
+    }
+    */
+    //public void OnFinish()
+    //{
+    //    GameManager.Instance.ChangeLevel(1);
+    //    GameManager.Instance.ChangeScene(0);
+    //}
+
+    public void OnFinish()
+    {
+        GameManager.Instance.ChangeLevel(GameManager.Instance.levelCurrent + 1);
+        GameManager.Instance.ChangeScene(0);
     }
 
     #endregion Condition

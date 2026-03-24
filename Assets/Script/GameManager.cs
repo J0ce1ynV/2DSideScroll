@@ -1,14 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 
 public class GameManager : MonoBehaviour
 {
-    #region GameManager
 
+    #region Game Manager
     public static GameManager Instance;
-
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -23,9 +24,8 @@ public class GameManager : MonoBehaviour
 
     public void GameManagerCheck()
     {
-        Debug.Log("working");
+        //Debug.Log("GameManager Check");
     }
-
     #endregion
 
     #region Game Management
@@ -48,32 +48,51 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    #region LevelManagement
+    #region Level Manager
+    LevelData levelData;
     public int levelCurrent;
-    
+
+    //berguna untuk Check Save File ada atau tidak
     public void CheckSaveFile()
     {
-        if (File.Exists(Application.dataPath + "level.json"))
-        {
-            LoadLevel();
-        }
+        if (File.Exists(Application.dataPath + "/Level.json")) LoadLevel();
         else SaveLevel();
     }
-
+    //berguna untuk save level ke json
     private void SaveLevel()
     {
-        LevelData leveldata = new LevelData();
-        leveldata.level = levelCurrent;
-        string json = JsonUtility.ToJson(leveldata);
-        File.WriteAllText(Application.dataPath+"/level.json", json);
+        levelData = new LevelData();
+        levelData.level = levelCurrent;
+        string json = JsonUtility.ToJson(levelData, true);
+        File.WriteAllText(Application.dataPath + "/Level.json", json);
     }
-
+    //berguna untuk load level dari json
     private void LoadLevel()
     {
         string json;
-        json = File.ReadAllText(Application.dataPath + "/level.json");
+        json = File.ReadAllText(Application.dataPath + "/Level.json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
         levelCurrent = levelData.level;
     }
+    //berguna untuk Load Level dan assign ke game manager
+    private void CheckLevel()
+    {
+        LoadLevel();
+        levelCurrent = levelData.level;
+    }
+    //berguna untuk mengganti nilai level / assign level
+    public void ChangeLevel(int newLevelUnlocked)
+    {
+        levelCurrent = newLevelUnlocked;
+        SaveLevel();
+    }
+    //berguna untuk reset level
+    public void ResetLevel()
+    {
+        levelCurrent = 0;
+        SaveLevel();
+    }
+
     #endregion
+
 }

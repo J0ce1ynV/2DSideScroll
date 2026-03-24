@@ -9,6 +9,8 @@ TagManager:
   - Trap
   - Wall
   - Trigger
+  - Fruit
+  - Platform
   layers:
   - Default
   - TransparentFX
